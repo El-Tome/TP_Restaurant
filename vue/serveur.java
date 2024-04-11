@@ -8,12 +8,12 @@ package restaurant.vue;
  *
  * @author t.chaumette
  */
-public class serveur extends javax.swing.JFrame {
+public class Serveur extends javax.swing.JFrame {
 
     /**
      * Creates new form serveur
      */
-    public serveur() {
+    public Serveur() {
         initComponents();
     }
 
@@ -28,6 +28,23 @@ public class serveur extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         Text = new javax.swing.JLabel();
+        Text2 = new javax.swing.JLabel();
+        tableau = new javax.swing.JScrollPane();
+        tableTableau = new javax.swing.JTable();
+        tableOccupe = new javax.swing.JButton();
+        tableLibre = new javax.swing.JButton();
+        Text3 = new javax.swing.JLabel();
+        Text4 = new javax.swing.JLabel();
+        numTableCommande = new javax.swing.JScrollPane();
+        numeroTableCommande = new javax.swing.JList<>();
+        afficherCommandeTable = new javax.swing.JTextField();
+        Text5 = new javax.swing.JLabel();
+        commandeListe = new javax.swing.JScrollPane();
+        commandeTable = new javax.swing.JList<>();
+        supprCommande = new javax.swing.JButton();
+        ListePlats = new javax.swing.JScrollPane();
+        listesPlats = new javax.swing.JList<>();
+        addCommande = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -45,24 +62,163 @@ public class serveur extends javax.swing.JFrame {
         Text.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         Text.setText("Serveur");
 
+        Text2.setText("Lister des tables");
+
+        tableTableau.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Numéro table", "Occupé"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tableau.setViewportView(tableTableau);
+
+        tableOccupe.setText("Occupé");
+
+        tableLibre.setText("Libre");
+        tableLibre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableLibreActionPerformed(evt);
+            }
+        });
+
+        Text3.setText("liste des commandes");
+
+        Text4.setText("Numero table");
+
+        numeroTableCommande.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        numTableCommande.setViewportView(numeroTableCommande);
+
+        afficherCommandeTable.setText("afficher");
+        afficherCommandeTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                afficherCommandeTableActionPerformed(evt);
+            }
+        });
+
+        Text5.setText("Commande de la table");
+
+        commandeTable.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        commandeListe.setViewportView(commandeTable);
+
+        supprCommande.setText("Supprimer");
+
+        listesPlats.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        ListePlats.setViewportView(listesPlats);
+
+        addCommande.setText("ajouter à la commande");
+        addCommande.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCommandeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(300, 300, 300)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Text, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addGap(299, 299, 299))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tableOccupe, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(tableLibre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(tableau, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Text4)
+                            .addComponent(numTableCommande)
+                            .addComponent(afficherCommandeTable, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(addCommande, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ListePlats)
+                            .addComponent(Text5, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(commandeListe)
+                            .addComponent(supprCommande, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Text2)
+                        .addGap(211, 211, 211)
+                        .addComponent(Text3)))
+                .addGap(189, 189, 189))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(Text, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 380, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Text2)
+                    .addComponent(Text3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tableau, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tableOccupe)
+                            .addComponent(tableLibre)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Text4)
+                            .addComponent(Text5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(commandeListe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(numTableCommande, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(afficherCommandeTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(supprCommande))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ListePlats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addCommande))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableLibreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tableLibreActionPerformed
+
+    private void afficherCommandeTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afficherCommandeTableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_afficherCommandeTableActionPerformed
+
+    private void addCommandeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCommandeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addCommandeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -81,26 +237,44 @@ public class serveur extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Serveur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new serveur().setVisible(true);
+                new Serveur().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane ListePlats;
     private javax.swing.JLabel Text;
+    private javax.swing.JLabel Text2;
+    private javax.swing.JLabel Text3;
+    private javax.swing.JLabel Text4;
+    private javax.swing.JLabel Text5;
+    private javax.swing.JButton addCommande;
+    private javax.swing.JTextField afficherCommandeTable;
+    private javax.swing.JScrollPane commandeListe;
+    private javax.swing.JList<String> commandeTable;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JList<String> listesPlats;
+    private javax.swing.JScrollPane numTableCommande;
+    private javax.swing.JList<String> numeroTableCommande;
+    private javax.swing.JButton supprCommande;
+    private javax.swing.JButton tableLibre;
+    private javax.swing.JButton tableOccupe;
+    private javax.swing.JTable tableTableau;
+    private javax.swing.JScrollPane tableau;
     // End of variables declaration//GEN-END:variables
 }
