@@ -4,19 +4,45 @@
  */
 package restaurant.vue;
 
+import restaurant.Ingredient;
+import restaurant.Plat;
+import restaurant.Table;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author t.chaumette
  */
 public class Serveur extends javax.swing.JFrame {
-
+    private Modele modele;
     /**
      * Creates new form serveur
      */
     public Serveur() {
+        modele = new Modele();
         initComponents();
+        updateComponents();
+        loadModele();
     }
 
+    private void saveModele()    {
+        try {
+            RessouceManager.save(this.modele, "modele.save");
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la sauvegarde du modele : " + e.getMessage());
+        }
+    }
+
+    private void loadModele() {
+        try {
+            this.modele = (Modele) RessouceManager.load("modele.save");
+            updateComponents();
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement du modele : " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,6 +109,11 @@ public class Serveur extends javax.swing.JFrame {
         tableau.setViewportView(tableTableau);
 
         tableOccupe.setText("Occupé");
+        tableOccupe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableOccupeActionPerformed(evt);
+            }
+        });
 
         tableLibre.setText("Libre");
         tableLibre.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +150,11 @@ public class Serveur extends javax.swing.JFrame {
         commandeListe.setViewportView(commandeTable);
 
         supprCommande.setText("Supprimer");
+        supprCommande.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supprCommandeActionPerformed(evt);
+            }
+        });
 
         listesPlats.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -208,17 +244,58 @@ public class Serveur extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableLibreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableLibreActionPerformed
+    public void updateComponents() {
+        updateTable();
+    }
 
-    private void afficherCommandeTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_afficherCommandeTableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_afficherCommandeTableActionPerformed
+    private void updateTable() {
+        DefaultTableModel tableModel = new DefaultTableModel();
 
-    private void addCommandeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCommandeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addCommandeActionPerformed
+        tableModel.addColumn("Numéro de la table");
+        tableModel.addColumn("Est occupé");
+
+        for (Table table : modele.getTables()) {
+            tableModel.addRow(new Object[]{table.getNumero(), table.isOccupee()});
+        }
+
+        tableTableau.setModel(tableModel);
+    }
+
+    private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = tableTableau.getValueAt(tableTableau.getSelectedRow(), 0).toString();
+
+        Table table = modele.getTable(Integer.parseInt(numero));
+        table.setOccupee(false);
+
+        saveModele();
+        updateTable();
+    }
+
+    private void tableOccupeActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = tableTableau.getValueAt(tableTableau.getSelectedRow(), 0).toString();
+
+        Table table = modele.getTable(Integer.parseInt(numero));
+        table.setOccupee(true);
+
+        saveModele();
+        updateTable();
+    }
+
+
+
+
+    private void afficherCommandeTableActionPerformed(java.awt.event.ActionEvent evt) {
+
+    }
+
+    private void addCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+
+    }
+
+
+    private void supprCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+
+    }
 
     /**
      * @param args the command line arguments

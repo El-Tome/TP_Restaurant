@@ -483,7 +483,7 @@ public class Manager extends javax.swing.JFrame {
         DefaultListModel listModel = new DefaultListModel();
 
         for (Table table : modele.getTables()) {
-            listModel.addElement(table.getNumero());
+            listModel.addElement(table.getStringNumero());
         }
 
         listeTable.setModel(listModel);
@@ -500,9 +500,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void supprimerTableActionPerformed(java.awt.event.ActionEvent evt) {
-        int numero = listeTable.getSelectedIndex();
+        String numero = listeTable.getSelectedValue();
 
-        Table table = modele.getTable(numero);
+        Table table = modele.getTable(Integer.parseInt(numero));
         modele.removeTable(table);
 
         saveModele();

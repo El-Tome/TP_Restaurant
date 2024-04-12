@@ -21,6 +21,10 @@ public class Table implements java.io.Serializable {
         return numero;
     }
 
+    public String getStringNumero() {
+        return Integer.toString(numero);
+    }
+
     public boolean isOccupee() {
         return occupee;
     }
