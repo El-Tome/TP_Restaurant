@@ -25,6 +25,8 @@ public class Serveur extends javax.swing.JFrame {
         initComponents();
         updateComponents();
         loadModele();
+        DefaultListModel listModel = new DefaultListModel();
+        commandeTable.setModel(listModel);
     }
 
     private void saveModele()    {
@@ -63,7 +65,7 @@ public class Serveur extends javax.swing.JFrame {
         Text4 = new javax.swing.JLabel();
         numTableCommande = new javax.swing.JScrollPane();
         numeroTableCommande = new javax.swing.JList<>();
-        afficherCommandeTable = new javax.swing.JTextField();
+        afficher = new javax.swing.JButton();
         Text5 = new javax.swing.JLabel();
         commandeListe = new javax.swing.JScrollPane();
         commandeTable = new javax.swing.JList<>();
@@ -133,10 +135,10 @@ public class Serveur extends javax.swing.JFrame {
         });
         numTableCommande.setViewportView(numeroTableCommande);
 
-        afficherCommandeTable.setText("afficher");
-        afficherCommandeTable.addActionListener(new java.awt.event.ActionListener() {
+        afficher.setText("Afficher");
+        afficher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                afficherCommandeTableActionPerformed(evt);
+                afficherActionPerformed(evt);
             }
         });
 
@@ -149,7 +151,7 @@ public class Serveur extends javax.swing.JFrame {
         });
         commandeListe.setViewportView(commandeTable);
 
-        supprCommande.setText("Supprimer");
+        supprCommande.setText("Supprimer le plat");
         supprCommande.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 supprCommandeActionPerformed(evt);
@@ -189,11 +191,13 @@ public class Serveur extends javax.swing.JFrame {
                                 .addComponent(tableLibre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(tableau, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(94, 94, 94)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Text4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Text4)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(numTableCommande)
-                            .addComponent(afficherCommandeTable, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(addCommande, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(addCommande, javax.swing.GroupLayout.PREFERRED_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(afficher, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ListePlats)
@@ -232,7 +236,7 @@ public class Serveur extends javax.swing.JFrame {
                             .addComponent(numTableCommande, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(afficherCommandeTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(afficher)
                             .addComponent(supprCommande))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,6 +250,17 @@ public class Serveur extends javax.swing.JFrame {
 
     public void updateComponents() {
         updateTable();
+        updatePlats();
+    }
+
+    public void updatePlats() {
+        DefaultListModel listModel = new DefaultListModel();
+        listesPlats.setModel(listModel);
+        for (Plat plat : modele.getPlats()) {
+            if (plat.getRealisable()) {
+                listModel.addElement(plat.getNom());
+            }
+        }
     }
 
     private void updateTable() {
@@ -259,6 +274,12 @@ public class Serveur extends javax.swing.JFrame {
         }
 
         tableTableau.setModel(tableModel);
+
+        DefaultListModel listModel = new DefaultListModel();
+        numeroTableCommande.setModel(listModel);
+        for (Table table : modele.getTables()) {
+            listModel.addElement(table.getStringNumero());
+        }
     }
 
     private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,17 +305,43 @@ public class Serveur extends javax.swing.JFrame {
 
 
 
-    private void afficherCommandeTableActionPerformed(java.awt.event.ActionEvent evt) {
 
+    private void afficherActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = numeroTableCommande.getSelectedValue();
+        Table table = modele.getTable(Integer.parseInt(numero));
+
+        DefaultListModel listModel = new DefaultListModel();
+        commandeTable.setModel(listModel);
+        for (Plat plat : table.getPlats()) {
+            listModel.addElement(plat.getNom());
+        }
     }
 
     private void addCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = numeroTableCommande.getSelectedValue();
+        Table table = modele.getTable(Integer.parseInt(numero));
 
+        String plat = listesPlats.getSelectedValue();
+        Plat platObj = modele.getPlat(plat);
+
+        table.addPlat(platObj);
+
+        saveModele();
+        afficherActionPerformed(evt);
     }
 
 
     private void supprCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = numeroTableCommande.getSelectedValue();
+        Table table = modele.getTable(Integer.parseInt(numero));
 
+        String plat = commandeTable.getSelectedValue();
+        Plat platObj = modele.getPlat(plat);
+
+        table.removePlat(platObj);
+
+        saveModele();
+        afficherActionPerformed(evt);
     }
 
     /**
@@ -341,7 +388,7 @@ public class Serveur extends javax.swing.JFrame {
     private javax.swing.JLabel Text4;
     private javax.swing.JLabel Text5;
     private javax.swing.JButton addCommande;
-    private javax.swing.JTextField afficherCommandeTable;
+    private javax.swing.JButton afficher;
     private javax.swing.JScrollPane commandeListe;
     private javax.swing.JList<String> commandeTable;
     private javax.swing.JPanel jPanel1;
