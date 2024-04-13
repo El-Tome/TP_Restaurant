@@ -10,12 +10,14 @@ public class Modele implements java.io.Serializable {
     private ArrayList<Plat> plats;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Table> tables;
+    private float argent;
 
 
     public Modele() {
         this.plats = new ArrayList<Plat>();
         this.ingredients = new ArrayList<Ingredient>();
         this.tables = new ArrayList<Table>();
+        this.argent = 0;
     }
 
     public ArrayList<Plat> getPlats() {
@@ -59,6 +61,10 @@ public class Modele implements java.io.Serializable {
         return null;
     }
 
+    public float getArgent() {
+        return argent;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
 
     public void addPlat(Plat plat) {
@@ -73,6 +79,10 @@ public class Modele implements java.io.Serializable {
         tables.add(table);
     }
 
+    public void addArgent(float argent) {
+        this.argent += argent;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
 
     public void removePlat(Plat plat) {
@@ -85,5 +95,9 @@ public class Modele implements java.io.Serializable {
 
     public void removeTable(Table table) {
         tables.remove(table);
+    }
+
+    public void removeArgent(float argent) {
+        this.argent -= argent;
     }
 }

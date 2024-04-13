@@ -4,17 +4,45 @@
  */
 package restaurant.vue;
 
+import restaurant.Table;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author t.chaumette
  */
 public class Caissier extends javax.swing.JFrame {
+    private Modele modele;
+    private float gainJournee = 0;
 
     /**
      * Creates new form Caissier
      */
     public Caissier() {
+        modele = new Modele();
         initComponents();
+        loadModele();
+        updateComponents();
+        gain.setText(Float.toString(gainJournee));
+    }
+
+    private void saveModele()    {
+        try {
+            RessouceManager.save(this.modele, "modele.save");
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la sauvegarde du modele : " + e.getMessage());
+        }
+    }
+
+    private void loadModele() {
+        try {
+            this.modele = (Modele) RessouceManager.load("modele.save");
+            updateComponents();
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement du modele : " + e.getMessage());
+        }
     }
 
     /**
@@ -105,6 +133,11 @@ public class Caissier extends javax.swing.JFrame {
         tableau1.setViewportView(tableTableau1);
 
         tableOccupe1.setText("Occupé");
+        tableOccupe1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tableOccupe1ActionPerformed(evt);
+            }
+        });
 
         tableLibre1.setText("Libre");
         tableLibre1.addActionListener(new java.awt.event.ActionListener() {
@@ -172,17 +205,50 @@ public class Caissier extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableLibreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableLibreActionPerformed
+    public void updateComponents() {
+        updateTable();
+    }
 
-    private void tableLibre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableLibre1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableLibre1ActionPerformed
+    private void updateTable() {
+        DefaultTableModel tableModel = new DefaultTableModel();
 
-    private void encaisserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encaisserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_encaisserActionPerformed
+        tableModel.addColumn("Numéro de la table");
+        tableModel.addColumn("Est occupé");
+
+        for (Table table : modele.getTables()) {
+            tableModel.addRow(new Object[]{table.getStringNumero(), table.isOccupee()});
+        }
+
+        tableTableau1.setModel(tableModel);
+    }
+
+    private void tableLibre1ActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = tableTableau1.getValueAt(tableTableau1.getSelectedRow(), 0).toString();
+
+        Table table = modele.getTable(Integer.parseInt(numero));
+        table.setOccupee(false);
+
+        saveModele();
+        updateTable();
+    }
+
+    private void tableOccupe1ActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = tableTableau1.getValueAt(tableTableau1.getSelectedRow(), 0).toString();
+
+        Table table = modele.getTable(Integer.parseInt(numero));
+        table.setOccupee(true);
+
+        saveModele();
+        updateTable();
+    }
+
+    private void encaisserActionPerformed(java.awt.event.ActionEvent evt) {
+        gainJournee += Float.parseFloat(prixCommande.getText());
+        modele.addArgent(Float.parseFloat(prixCommande.getText()));
+
+        gain.setText(Float.toString(gainJournee));
+        saveModele();
+    }
 
     /**
      * @param args the command line arguments
@@ -191,7 +257,7 @@ public class Caissier extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -218,6 +284,8 @@ public class Caissier extends javax.swing.JFrame {
             }
         });
     }
+
+    private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Text1;
