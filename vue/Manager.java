@@ -88,6 +88,7 @@ public class Manager extends javax.swing.JFrame {
         nomIngredient = new javax.swing.JTextField();
         Text8 = new javax.swing.JLabel();
         quantiteIngredient = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         Text9 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
         acheter = new javax.swing.JButton();
@@ -232,6 +233,8 @@ public class Manager extends javax.swing.JFrame {
 
         quantiteIngredient.setText("1");
 
+        jLabel1.setText("Prix ingredient : 2 ");
+
         Text9.setText("Total");
 
         total.setText(" ");
@@ -306,14 +309,17 @@ public class Manager extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(Text7)
-                                                    .addComponent(nomIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(Text9))
+                                                    .addComponent(nomIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(Text8)
                                                     .addComponent(quantiteIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addComponent(acheter, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(Text9)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(acheter, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel1))))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
@@ -376,7 +382,9 @@ public class Manager extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nomIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(quantiteIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Text9)
                             .addComponent(total))
@@ -398,6 +406,7 @@ public class Manager extends javax.swing.JFrame {
         updateComponentIngre();
         updateComponentTable();
         updateComponentPlat();
+        argents.setText(Float.toString(modele.getArgent()));
     }
 
 
@@ -544,8 +553,11 @@ public class Manager extends javax.swing.JFrame {
             ingredient.setQuantite(ingredient.getQuantite() + quantite);
         }
 
+        total.setText(Float.toString(2 * quantite));
+        modele.removeArgent(2 * quantite);
+
         saveModele();
-        updateComponentIngre();
+        updateComponents();
     }
 
 
@@ -606,6 +618,7 @@ public class Manager extends javax.swing.JFrame {
     private javax.swing.JButton editerPlat;
     private javax.swing.JScrollPane ingredientsDansPlat;
     private javax.swing.JList<String> ingredientsPlat;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane listeDesPlats;
     private javax.swing.JTable listeIngredients;
     private javax.swing.JTable listePlats;
