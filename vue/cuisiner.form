@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -42,7 +42,7 @@
                           </Group>
                           <Component id="Text2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jButton1" min="-2" pref="80" max="-2" attributes="0"/>
+                              <Component id="afficherCommande" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="finiCommande" min="-2" max="-2" attributes="0"/>
@@ -102,7 +102,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="afficherCommande" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="afficherIngredient" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -177,10 +177,13 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="afficherCommande">
       <Properties>
         <Property name="text" type="java.lang.String" value="Afficher"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="afficherCommandeActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="CommandeListe">
       <AuxValues>
@@ -211,11 +214,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Afficher Ingredient"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="afficherIngredientActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="finiCommande">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fini"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="finiCommandeActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="IngredientListe">
       <AuxValues>
@@ -297,6 +306,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Retirer"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ingreRemActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="Text5">
       <Properties>
@@ -346,11 +358,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Actif"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="actifActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="inactif">
       <Properties>
         <Property name="text" type="java.lang.String" value="Inactif"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inactifActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

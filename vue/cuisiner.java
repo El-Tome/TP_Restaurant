@@ -4,17 +4,49 @@
  */
 package restaurant.vue;
 
+import restaurant.Ingredient;
+import restaurant.Plat;
+import restaurant.Table;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author t.chaumette
  */
 public class cuisiner extends javax.swing.JFrame {
-
+    private Modele modele;
     /**
      * Creates new form cuisiner
      */
     public cuisiner() {
+        modele = new Modele();
         initComponents();
+        updateComponents();
+        loadModele();
+
+        // initialisation des composants
+        commandeListe.setModel( new DefaultListModel());
+        listeIngredient.setModel(new DefaultListModel());
+    }
+
+
+    private void saveModele()    {
+        try {
+            RessouceManager.save(this.modele, "modele.save");
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la sauvegarde du modele : " + e.getMessage());
+        }
+    }
+
+    private void loadModele() {
+        try {
+            this.modele = (Modele) RessouceManager.load("modele.save");
+            updateComponents();
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement du modele : " + e.getMessage());
+        }
     }
 
     /**
@@ -30,7 +62,7 @@ public class cuisiner extends javax.swing.JFrame {
         Text2 = new javax.swing.JLabel();
         tableListe = new javax.swing.JScrollPane();
         listeTable = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        afficherCommande = new javax.swing.JButton();
         CommandeListe = new javax.swing.JScrollPane();
         commandeListe = new javax.swing.JList<>();
         afficherIngredient = new javax.swing.JButton();
@@ -64,7 +96,12 @@ public class cuisiner extends javax.swing.JFrame {
         });
         tableListe.setViewportView(listeTable);
 
-        jButton1.setText("Afficher");
+        afficherCommande.setText("Afficher");
+        afficherCommande.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                afficherCommandeActionPerformed(evt);
+            }
+        });
 
         commandeListe.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -74,8 +111,18 @@ public class cuisiner extends javax.swing.JFrame {
         CommandeListe.setViewportView(commandeListe);
 
         afficherIngredient.setText("Afficher Ingredient");
+        afficherIngredient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                afficherIngredientActionPerformed(evt);
+            }
+        });
 
         finiCommande.setText("Fini");
+        finiCommande.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finiCommandeActionPerformed(evt);
+            }
+        });
 
         listeIngredient.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -103,6 +150,11 @@ public class cuisiner extends javax.swing.JFrame {
         Text4.setText("Quantité :");
 
         ingreRem.setText("Retirer");
+        ingreRem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ingreRemActionPerformed(evt);
+            }
+        });
 
         Text5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Text5.setText("Listes des plats");
@@ -121,8 +173,18 @@ public class cuisiner extends javax.swing.JFrame {
         PlatsList.setViewportView(platList);
 
         actif.setText("Actif");
+        actif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actifActionPerformed(evt);
+            }
+        });
 
         inactif.setText("Inactif");
+        inactif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inactifActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,7 +207,7 @@ public class cuisiner extends javax.swing.JFrame {
                                 .addComponent(IngredientListe, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(Text2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(afficherCommande, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(finiCommande)
@@ -190,7 +252,7 @@ public class cuisiner extends javax.swing.JFrame {
                             .addComponent(CommandeListe))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(afficherCommande)
                             .addComponent(afficherIngredient)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Text3)
@@ -216,6 +278,153 @@ public class cuisiner extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
+    private void updateComponents() {
+        updateTableList();
+        updateIngredientList();
+        updatePlatList();
+    }
+
+    public void updateTableList() {
+        DefaultListModel listModel = new DefaultListModel();
+
+        for (Table table : modele.getTables()) {
+            if (!table.getPlats().isEmpty()) {
+                listModel.addElement(table.getStringNumero());
+            }
+        }
+
+        listeTable.setModel(listModel);
+    }
+
+    public void updateCommandeList(Table table) {
+        if (table == null) {
+            return;
+        }
+        DefaultListModel listModel = new DefaultListModel();
+        for (Plat plat : table.getPlats()) {
+            listModel.addElement(plat.getNom());
+        }
+        commandeListe.setModel(listModel);
+    }
+
+    private void afficherCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = listeTable.getSelectedValue();
+        Table table = modele.getTable(Integer.parseInt(numero));
+
+        updateCommandeList(table);
+    }
+
+    private void afficherIngredientActionPerformed(java.awt.event.ActionEvent evt) {
+        String nom = commandeListe.getSelectedValue();
+        Plat plat = modele.getPlat(nom);
+
+        DefaultListModel listModel = new DefaultListModel();
+        for (Ingredient ingredient : plat.getIngredients()) {
+            listModel.addElement(ingredient.getNom());
+        }
+        listeIngredient.setModel(listModel);
+    }
+
+    private void finiCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        String numero = listeTable.getSelectedValue();
+        Table table = modele.getTable(Integer.parseInt(numero));
+        String nom = commandeListe.getSelectedValue();
+        Plat plat = modele.getPlat(nom);
+
+        for (Ingredient ingredient : plat.getIngredients()) {
+            ingredient.setQuantite(ingredient.getQuantite() - 1);
+        }
+
+        haveEnoughIngredient(plat);
+
+        table.removePlat(plat);
+
+        updateComponents();
+        updateCommandeList(table);
+        saveModele();
+    }
+
+
+
+    public void updateIngredientList() {
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Nom");
+        tableModel.addColumn("Quantite");
+
+        for (Ingredient ingredient : modele.getIngredients()) {
+            tableModel.addRow(new Object[]{ingredient.getNom(), Integer.toString(ingredient.getQuantite())});
+        }
+
+        listeIngredients.setModel(tableModel);
+    }
+
+    private void ingreRemActionPerformed(java.awt.event.ActionEvent evt) {
+        String nom = listeIngredients.getValueAt(listeIngredients.getSelectedRow(), 0).toString();
+        Ingredient ingredient = modele.getIngredient(nom);
+        String strQuantite = quantiteRem.getText();
+        int quantite = Integer.parseInt(strQuantite);
+
+        ingredient.setQuantite(ingredient.getQuantite() - quantite);
+
+        for (Plat plat : modele.getPlats()) {
+            haveEnoughIngredient(plat);
+        }
+
+        updatePlatList();
+        updateIngredientList();
+        saveModele();
+    }
+
+    public void haveEnoughIngredient(Plat plat) {
+        for (Ingredient ingredient : plat.getIngredients()) {
+            if (ingredient.getQuantite() <= 0) {
+                plat.setRealisable(false);
+                return;
+            }
+        }
+        plat.setRealisable(true);
+    }
+
+
+    private void updatePlatList() {
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Nom");
+        tableModel.addColumn("Actif");
+
+        for (Plat plat : modele.getPlats()) {
+            tableModel.addRow(new Object[]{plat.getNom(), plat.getRealisable()});
+        }
+
+        platList.setModel(tableModel);
+    }
+
+
+
+    private void actifActionPerformed(java.awt.event.ActionEvent evt) {
+        String nom = platList.getValueAt(platList.getSelectedRow(), 0).toString();
+        Plat plat = modele.getPlat(nom);
+
+        plat.setRealisable(true);
+
+        updatePlatList();
+        saveModele();
+    }
+
+    private void inactifActionPerformed(java.awt.event.ActionEvent evt) {
+        String nom = platList.getValueAt(platList.getSelectedRow(), 0).toString();
+        Plat plat = modele.getPlat(nom);
+
+        plat.setRealisable(false);
+
+        updatePlatList();
+        saveModele();
+    }
+
+
+
+
 
     /**
      * @param args the command line arguments
@@ -263,12 +472,12 @@ public class cuisiner extends javax.swing.JFrame {
     private javax.swing.JLabel Text4;
     private javax.swing.JLabel Text5;
     private javax.swing.JButton actif;
+    private javax.swing.JButton afficherCommande;
     private javax.swing.JButton afficherIngredient;
     private javax.swing.JList<String> commandeListe;
     private javax.swing.JButton finiCommande;
     private javax.swing.JButton inactif;
     private javax.swing.JButton ingreRem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JList<String> listeIngredient;
     private javax.swing.JTable listeIngredients;
     private javax.swing.JList<String> listeTable;

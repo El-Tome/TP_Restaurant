@@ -57,6 +57,8 @@ public class Plat implements java.io.Serializable {
         this.realisable = realisable;
     }
 
+
+
     @Override
     public String toString() {
         return nom + " : " + prix + "€";
