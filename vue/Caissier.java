@@ -223,6 +223,9 @@ public class Caissier extends javax.swing.JFrame {
     }
 
     private void tableLibre1ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tableTableau1.getSelectedRow() == -1) {
+            return;
+        }
         String numero = tableTableau1.getValueAt(tableTableau1.getSelectedRow(), 0).toString();
 
         Table table = modele.getTable(Integer.parseInt(numero));
@@ -233,6 +236,9 @@ public class Caissier extends javax.swing.JFrame {
     }
 
     private void tableOccupe1ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tableTableau1.getSelectedRow() == -1) {
+            return;
+        }
         String numero = tableTableau1.getValueAt(tableTableau1.getSelectedRow(), 0).toString();
 
         Table table = modele.getTable(Integer.parseInt(numero));
@@ -243,6 +249,9 @@ public class Caissier extends javax.swing.JFrame {
     }
 
     private void encaisserActionPerformed(java.awt.event.ActionEvent evt) {
+        if (prixCommande.getText().isEmpty()) {
+            return;
+        }
         gainJournee += Float.parseFloat(prixCommande.getText());
         modele.addArgent(Float.parseFloat(prixCommande.getText()));
 

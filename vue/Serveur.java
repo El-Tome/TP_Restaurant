@@ -283,6 +283,9 @@ public class Serveur extends javax.swing.JFrame {
     }
 
     private void tableLibreActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tableTableau.getSelectedRow() == -1) {
+            return;
+        }
         String numero = tableTableau.getValueAt(tableTableau.getSelectedRow(), 0).toString();
 
         Table table = modele.getTable(Integer.parseInt(numero));
@@ -293,6 +296,9 @@ public class Serveur extends javax.swing.JFrame {
     }
 
     private void tableOccupeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tableTableau.getSelectedRow() == -1) {
+            return;
+        }
         String numero = tableTableau.getValueAt(tableTableau.getSelectedRow(), 0).toString();
 
         Table table = modele.getTable(Integer.parseInt(numero));
@@ -307,6 +313,9 @@ public class Serveur extends javax.swing.JFrame {
 
 
     private void afficherActionPerformed(java.awt.event.ActionEvent evt) {
+        if (numeroTableCommande.getSelectedIndex() == -1) {
+            return;
+        }
         String numero = numeroTableCommande.getSelectedValue();
         Table table = modele.getTable(Integer.parseInt(numero));
 
@@ -318,6 +327,9 @@ public class Serveur extends javax.swing.JFrame {
     }
 
     private void addCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (numeroTableCommande.getSelectedIndex() == -1 || listesPlats.getSelectedIndex() == -1) {
+            return;
+        }
         String numero = numeroTableCommande.getSelectedValue();
         Table table = modele.getTable(Integer.parseInt(numero));
 
@@ -332,6 +344,9 @@ public class Serveur extends javax.swing.JFrame {
 
 
     private void supprCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (numeroTableCommande.getSelectedIndex() == -1 || commandeTable.getSelectedIndex() == -1) {
+            return;
+        }
         String numero = numeroTableCommande.getSelectedValue();
         Table table = modele.getTable(Integer.parseInt(numero));
 

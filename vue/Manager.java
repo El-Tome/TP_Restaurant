@@ -433,6 +433,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void ajouterPlatActionPerformed(java.awt.event.ActionEvent evt) {
+        if (nomPlat.getText().isEmpty() || prixPlat.getText().isEmpty() || ingredientsPlat.getSelectedValuesList().isEmpty()) {
+            return;
+        }
         String nom = nomPlat.getText();
         float prix = Float.parseFloat(prixPlat.getText());
         ArrayList<String> ingredients = new ArrayList<String>(ingredientsPlat.getSelectedValuesList());
@@ -450,6 +453,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void supprimerPlatActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listePlats.getSelectedRow() == -1) {
+            return;
+        }
         String nom = listePlats.getValueAt(listePlats.getSelectedRow(), 0).toString();
 
         Plat plat = modele.getPlat(nom);
@@ -460,6 +466,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void editerPlatActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listePlats.getSelectedRow() == -1) {
+            return;
+        }
         String nom = listePlats.getValueAt(listePlats.getSelectedRow(), 0).toString();
         Plat plat = modele.getPlat(nom);
 
@@ -469,9 +478,15 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void modifierPlatActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listePlats.getSelectedRow() == -1) {
+            return;
+        }
         String nom = listePlats.getValueAt(listePlats.getSelectedRow(), 0).toString();
         Plat plat = modele.getPlat(nom);
 
+        if (nomPlat.getText().isEmpty() || prixPlat.getText().isEmpty() || ingredientsPlat.getSelectedValuesList().isEmpty()) {
+            return;
+        }
         plat.setNom(nomPlat.getText());
         plat.setPrix(Float.parseFloat(prixPlat.getText()));
         ArrayList<String> ingredients = new ArrayList<String>(ingredientsPlat.getSelectedValuesList());
@@ -499,7 +514,16 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void ajouterTableActionPerformed(java.awt.event.ActionEvent evt) {
+        if (ajouterTableField.getText().isEmpty() ) {
+            return;
+        }
         String numero = ajouterTableField.getText();
+
+        try {
+            Integer num = Integer.parseInt(numero);
+        } catch (NumberFormatException e) {
+            return;
+        }
 
         Table table = new Table(Integer.parseInt(numero));
         modele.addTable(table);
@@ -509,6 +533,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void supprimerTableActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listeTable.getSelectedIndex() == -1) {
+            return;
+        }
         String numero = listeTable.getSelectedValue();
 
         Table table = modele.getTable(Integer.parseInt(numero));
@@ -542,6 +569,9 @@ public class Manager extends javax.swing.JFrame {
     }
 
     private void acheterActionPerformed(java.awt.event.ActionEvent evt) {
+        if (nomIngredient.getText().isEmpty() || quantiteIngredient.getText().isEmpty()) {
+            return;
+        }
         String nom = nomIngredient.getText();
         int quantite = Integer.parseInt(quantiteIngredient.getText());
 

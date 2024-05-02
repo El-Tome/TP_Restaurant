@@ -310,6 +310,9 @@ public class cuisiner extends javax.swing.JFrame {
     }
 
     private void afficherCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listeTable.getSelectedValue() == null) {
+            return;
+        }
         String numero = listeTable.getSelectedValue();
         Table table = modele.getTable(Integer.parseInt(numero));
 
@@ -317,6 +320,9 @@ public class cuisiner extends javax.swing.JFrame {
     }
 
     private void afficherIngredientActionPerformed(java.awt.event.ActionEvent evt) {
+        if (commandeListe.getSelectedValue() == null) {
+            return;
+        }
         String nom = commandeListe.getSelectedValue();
         Plat plat = modele.getPlat(nom);
 
@@ -328,6 +334,9 @@ public class cuisiner extends javax.swing.JFrame {
     }
 
     private void finiCommandeActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listeTable.getSelectedValue() == null || commandeListe.getSelectedValue() == null) {
+            return;
+        }
         String numero = listeTable.getSelectedValue();
         Table table = modele.getTable(Integer.parseInt(numero));
         String nom = commandeListe.getSelectedValue();
@@ -361,9 +370,17 @@ public class cuisiner extends javax.swing.JFrame {
     }
 
     private void ingreRemActionPerformed(java.awt.event.ActionEvent evt) {
+        if (listeIngredients.getSelectedRow() == -1 || quantiteRem.getText().isEmpty()) {
+            return;
+        }
         String nom = listeIngredients.getValueAt(listeIngredients.getSelectedRow(), 0).toString();
         Ingredient ingredient = modele.getIngredient(nom);
         String strQuantite = quantiteRem.getText();
+        try {
+            Integer num = Integer.parseInt(strQuantite);
+        } catch (NumberFormatException e) {
+            return;
+        }
         int quantite = Integer.parseInt(strQuantite);
 
         ingredient.setQuantite(ingredient.getQuantite() - quantite);
@@ -403,6 +420,9 @@ public class cuisiner extends javax.swing.JFrame {
 
 
     private void actifActionPerformed(java.awt.event.ActionEvent evt) {
+        if (platList.getSelectedRow() == -1) {
+            return;
+        }
         String nom = platList.getValueAt(platList.getSelectedRow(), 0).toString();
         Plat plat = modele.getPlat(nom);
 
@@ -413,6 +433,9 @@ public class cuisiner extends javax.swing.JFrame {
     }
 
     private void inactifActionPerformed(java.awt.event.ActionEvent evt) {
+        if (platList.getSelectedRow() == -1) {
+            return;
+        }
         String nom = platList.getValueAt(platList.getSelectedRow(), 0).toString();
         Plat plat = modele.getPlat(nom);
 
